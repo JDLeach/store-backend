@@ -2,17 +2,19 @@
 
 ## Config/Setup Instructions
 
-See .env.sample for the needed environment variables
-To start the PostgresSQL database use docker-compose up 
-Once the database is running you will need to:
-    connect to the docker db: docker exec -ti store-backend-postgres-1 psql -U postgres    
-    create the store database:
-        create database store;
-    create and grant all privileges to the user you assign in the .env file
-
-Use db-migrate up
-Use npm start to start the app
-Use npm run test to run the jasmine tests
+See .env.sample for the needed environment variables    
+Add in the username and password that you set in the .env file into the database.json file
+  
+To start the PostgresSQL database use docker-compose up  
+Once the database is running you will need to:  
+    connect to the docker db: docker exec -ti store-backend-postgres-1 psql -U postgres     
+    create the store database:  
+    create database store;  
+    create and grant all privileges to the user you assign in the .env file  
+  
+Use db-migrate up  
+Use npm start to start the app  
+Use npm run test to run the jasmine tests  
 
 ## Getting Started
 
