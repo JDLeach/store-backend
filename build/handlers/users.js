@@ -5,17 +5,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = require("../models/users");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
 const verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
 const store = new users_1.UserStore();
 // return a list of users
 const index = async (_req, res) => {
-    const users = await store.index();
-    res.send(users);
+    let users;
+    try {
+        users = await store.index();
+        res.send(users);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 // return a specific user
 const show = async (req, res) => {
-    const user = await store.show(req.params.id);
-    res.json(user == null ? "No user found with that id" : user);
+    let user;
+    try {
+        user = await store.show(req.params.id);
+        res.json(user == null ? "No user found with that id" : user);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 // create a user
 const create = async (req, res) => {
@@ -37,14 +52,15 @@ const create = async (req, res) => {
         const token = jsonwebtoken_1.default.sign({ u: user }, process.env.TOKEN_SECRET);
         res.json(token);
     }
-    catch (err) {
+    catch (e) {
         res.status(400);
-        res.json(err);
+        res.json(e);
     }
 };
+const middleware = [verifyValidId_1.default, verifyAuthToken_1.default];
 const userRoutes = (app) => {
     app.get('/users', verifyAuthToken_1.default, index);
-    app.get('/users/:id', verifyAuthToken_1.default, show);
+    app.get('/users/:id', middleware, show);
     app.post('/users', create);
 };
 exports.default = userRoutes;

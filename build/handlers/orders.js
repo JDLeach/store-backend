@@ -8,26 +8,50 @@ const verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
 const orders_1 = require("../models/orders");
 const store = new orders_1.OrderStore();
 const showCurrent = async (req, res) => {
-    const userId = req.body.id;
-    const orders = await store.showCurrent(userId);
-    res.json(orders);
+    const userId = req.params.id;
+    try {
+        const orders = await store.showCurrent(userId);
+        res.json(orders);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const showCompleted = async (req, res) => {
-    const userId = req.body.id;
-    const orders = await store.showCompleted(userId);
-    res.json(orders);
+    const userId = req.params.id;
+    try {
+        const orders = await store.showCompleted(userId);
+        res.json(orders);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const showProducts = async (req, res) => {
     const orderId = req.params.id;
-    const products = await store.showProducts(orderId);
-    res.json(products);
+    try {
+        const products = await store.showProducts(orderId);
+        res.json(products);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const addProduct = async (req, res) => {
     const orderId = req.params.id;
     const productId = req.body.productId;
     const quanity = parseInt(req.body.quanity);
-    const order = await store.addProduct(orderId, productId, quanity);
-    res.json(order);
+    try {
+        const order = await store.addProduct(orderId, productId, quanity);
+        res.json(order);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const createOrder = async (req, res) => {
     const userId = req.body.id;
@@ -37,15 +61,21 @@ const createOrder = async (req, res) => {
         status: status,
         user_id: userId
     };
-    const order = await store.createOrder(o);
-    res.json(order);
+    try {
+        const order = await store.createOrder(o);
+        res.json(order);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const middleware = [verifyValidId_1.default, verifyAuthToken_1.default];
 const orderRoutes = (app) => {
-    app.get('/orders', middleware, showCurrent);
-    app.get('/orders/completed', middleware, showCompleted);
+    app.get('/orders/:id', middleware, showCurrent);
+    app.get('/orders/completed/:id', middleware, showCompleted);
     app.get('/orders/:id/products', middleware, showProducts);
     app.post('/orders/:id/products', middleware, addProduct);
-    app.post('/orders', middleware, createOrder);
+    app.post('/orders', verifyAuthToken_1.default, createOrder);
 };
 exports.default = orderRoutes;

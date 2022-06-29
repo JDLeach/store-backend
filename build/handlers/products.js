@@ -8,12 +8,24 @@ const verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
 const products_1 = require("../models/products");
 const store = new products_1.ProductStore();
 const index = async (_req, res) => {
-    const products = await store.index();
-    res.json(products);
+    try {
+        const products = await store.index();
+        res.json(products);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const show = async (req, res) => {
-    const product = await store.show(req.params.id);
-    res.json(product == null ? "No product available with that id." : product);
+    try {
+        const product = await store.show(req.params.id);
+        res.json(product == null ? "No product available with that id." : product);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const create = async (req, res) => {
     const price = req.body.price;
@@ -27,8 +39,14 @@ const create = async (req, res) => {
         price: req.body.price,
         category: req.body.category
     };
-    const product = await store.create(p);
-    res.json(product);
+    try {
+        const product = await store.create(p);
+        res.json(product);
+    }
+    catch (e) {
+        res.status(400);
+        res.json(e);
+    }
 };
 const productRoutes = (app) => {
     app.get('/products', index);

@@ -44,31 +44,47 @@ var verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
 var products_1 = require("../models/products");
 var store = new products_1.ProductStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
             case 1:
                 products = _a.sent();
                 res.json(products);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                e_1 = _a.sent();
+                res.status(400);
+                res.json(e_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product;
+    var product, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(req.params.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.params.id)];
             case 1:
                 product = _a.sent();
                 res.json(product == null ? "No product available with that id." : product);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                e_2 = _a.sent();
+                res.status(400);
+                res.json(e_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var price, p, product;
+    var price, p, product, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -83,11 +99,20 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                     price: req.body.price,
                     category: req.body.category
                 };
-                return [4 /*yield*/, store.create(p)];
+                _a.label = 1;
             case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.create(p)];
+            case 2:
                 product = _a.sent();
                 res.json(product);
-                return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 3:
+                e_3 = _a.sent();
+                res.status(400);
+                res.json(e_3);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };

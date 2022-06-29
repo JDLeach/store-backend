@@ -12,7 +12,6 @@ const verifyAuthToken = (req, res, next) => {
         next();
     }
     catch (err) {
-        console.log("JWT Auth Fail");
         res.status(401);
         res.json(err);
     }

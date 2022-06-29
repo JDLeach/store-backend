@@ -21,3 +21,4 @@ app.get('/', function (req, res) {
 app.listen(4000, function () {
     console.log("starting app on: ".concat(address));
 });
+exports["default"] = app;

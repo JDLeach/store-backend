@@ -17,8 +17,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Create [token required] 'users' [POST]
 
 #### Orders
-- Show Current Orders by user (args: user id)[token required] 'orders' [GET]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required] 'orders/completed' [GET] 
+- Show Current Orders by user (args: user id)[token required] 'orders/:id' [GET]
+- [OPTIONAL] Completed Orders by user (args: user id)[token required] 'orders/completed/:id' [GET] 
 - Add: add a product to an order[token required] 'orders/:id/products' [POST]
 - Create [token required] 'orders' [POST]
 - showProduct - Show products from an order 'orders/:id/products' [GET]

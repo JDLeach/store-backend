@@ -9,7 +9,7 @@ const {
     POSTGRES_USER,
     POSTGRES_PASSWORD,
     POSTGRES_TEST_DB,
-
+    POSTGRES_PORT,
     ENV
 } = process.env;
 
@@ -21,7 +21,6 @@ if(ENV === 'test') {
     database: POSTGRES_TEST_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
-    port:5432
   })
 }
 
@@ -31,7 +30,6 @@ if(ENV === 'dev') {
     database: POSTGRES_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
-    port:5432
   })
 }
 

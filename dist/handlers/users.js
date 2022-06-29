@@ -41,37 +41,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var users_1 = require("../models/users");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
+var verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
 var store = new users_1.UserStore();
 // return a list of users
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var users, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
             case 1:
                 users = _a.sent();
                 res.send(users);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                e_1 = _a.sent();
+                res.status(400);
+                res.json(e_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 // return a specific user
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user;
+    var user, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(req.params.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.params.id)];
             case 1:
                 user = _a.sent();
                 res.json(user == null ? "No user found with that id" : user);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                e_2 = _a.sent();
+                res.status(400);
+                res.json(e_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 // create a user
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var username, password_digest, u, user, token, err_1;
+    var username, password_digest, u, user, token, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -98,17 +114,17 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
-                err_1 = _a.sent();
+                e_3 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(e_3);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 var userRoutes = function (app) {
-    app.get('/users', verifyAuthToken_1["default"], index);
-    app.get('/users/:id', verifyAuthToken_1["default"], show);
+    app.get('/users', verifyValidId_1["default"], index);
+    app.get('/users/:id', verifyValidId_1["default"], show);
     app.post('/users', create);
 };
 exports["default"] = userRoutes;

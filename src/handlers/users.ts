@@ -1,22 +1,33 @@
 import express, {Request, Response} from 'express';
 import { User, UserStore } from '../models/users';
 import jwt from 'jsonwebtoken';
+import verifyValidId from '../middleware/verifyValidId';
 import verifyAuthToken from '../middleware/verifyAuthToken';
 
 const store = new UserStore();
 
 // return a list of users
 const index = async(_req:Request, res:Response) =>{
-    const users = await store.index();
-
-    res.send(users);
+    let users:User[];
+    try{
+        users = await store.index();
+        res.send(users);
+    }catch(e){
+        res.status(400);
+        res.json(e);
+    }
 }
 
 // return a specific user
 const show = async(req: Request, res: Response) =>{
-    const user = await store.show(req.params.id);
-
-    res.json(user == null ? "No user found with that id" : user);
+    let user: User;
+    try{
+        user = await store.show(req.params.id);
+        res.json(user == null ? "No user found with that id" : user);
+    }catch(e){
+        res.status(400);
+        res.json(e);
+    }
 }
 
 // create a user
@@ -39,15 +50,17 @@ const create = async(req:Request, res:Response) =>{
         const token = jwt.sign({u: user}, process.env.TOKEN_SECRET!);
         res.json(token);
 
-    }catch (err){
+    }catch (e){
         res.status(400);
-        res.json(err);
+        res.json(e);
     }
 }
 
+const middleware = [verifyValidId, verifyAuthToken];
+
 const userRoutes = (app: express.Application) =>{
     app.get('/users', verifyAuthToken, index)
-    app.get('/users/:id', verifyAuthToken, show)
+    app.get('/users/:id', middleware, show)
     app.post('/users', create)
 }
 

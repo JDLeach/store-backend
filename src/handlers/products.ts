@@ -7,13 +7,23 @@ import { Product, ProductStore } from '../models/products';
 const store = new ProductStore();
 
 const index = async(_req: Request, res:Response) =>{
-    const products = await store.index();
-    res.json(products);
+    try{
+        const products = await store.index();
+        res.json(products);
+    }catch(e){
+        res.status(400);
+        res.json(e);
+    }
 }
 
 const show = async(req:Request, res:Response) =>{
-    const product = await store.show(req.params.id);
-    res.json(product == null ? "No product available with that id." : product)
+    try{
+        const product = await store.show(req.params.id);
+        res.json(product == null ? "No product available with that id." : product)
+    }catch(e){
+        res.status(400);
+        res.json(e);
+    }
 }
 
 const create = async (req:Request, res:Response) =>{
@@ -28,9 +38,13 @@ const create = async (req:Request, res:Response) =>{
         price: req.body.price,
         category: req.body.category
     }
-    const product = await store.create(p);
-
-    res.json(product);
+    try{
+        const product = await store.create(p);
+        res.json(product);
+    }catch(e){
+        res.status(400);
+        res.json(e);
+    }
     
 }
 
