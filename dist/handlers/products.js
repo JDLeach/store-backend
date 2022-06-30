@@ -40,8 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
-var verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
 var products_1 = require("../models/products");
+var verifyValidIds_1 = require("../middleware/verifyValidIds");
 var store = new products_1.ProductStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var products, e_1;
@@ -118,7 +118,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
 }); };
 var productRoutes = function (app) {
     app.get('/products', index);
-    app.get('/products/:id', verifyValidId_1["default"], show);
+    app.get('/products/:id', verifyValidIds_1.verifyValidParamId, show);
     app.post('/products', verifyAuthToken_1["default"], create);
 };
 exports["default"] = productRoutes;

@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
-var verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
+var verifyValidIds_1 = require("../middleware/verifyValidIds");
 var orders_1 = require("../models/orders");
 var store = new orders_1.OrderStore();
 var showCurrent = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -166,12 +166,11 @@ var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-var middleware = [verifyValidId_1["default"], verifyAuthToken_1["default"]];
 var orderRoutes = function (app) {
-    app.get('/orders/:id', verifyValidId_1["default"], showCurrent);
-    app.get('/orders/completed/:id', verifyValidId_1["default"], showCompleted);
-    app.get('/orders/:id/products', verifyValidId_1["default"], showProducts);
-    app.post('/orders/:id/products', middleware, addProduct);
-    app.post('/orders', middleware, createOrder);
+    app.get('/orders/:id', [verifyAuthToken_1["default"], verifyValidIds_1.verifyValidParamId], showCurrent);
+    app.get('/orders/completed/:id', [verifyAuthToken_1["default"], verifyValidIds_1.verifyValidParamId], showCompleted);
+    app.get('/orders/:id/products', [verifyAuthToken_1["default"], verifyValidIds_1.verifyValidParamId], showProducts);
+    app.post('/orders/:id/products', [verifyAuthToken_1["default"], verifyValidIds_1.verifyValidParamId], addProduct);
+    app.post('/orders', verifyAuthToken_1["default"], createOrder);
 };
 exports["default"] = orderRoutes;

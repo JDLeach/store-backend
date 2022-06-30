@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
-const verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
 const products_1 = require("../models/products");
+const verifyValidIds_1 = require("../middleware/verifyValidIds");
 const store = new products_1.ProductStore();
 const index = async (_req, res) => {
     try {
@@ -50,7 +50,7 @@ const create = async (req, res) => {
 };
 const productRoutes = (app) => {
     app.get('/products', index);
-    app.get('/products/:id', verifyValidId_1.default, show);
+    app.get('/products/:id', verifyValidIds_1.verifyValidParamId, show);
     app.post('/products', verifyAuthToken_1.default, create);
 };
 exports.default = productRoutes;

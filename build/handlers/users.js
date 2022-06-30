@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = require("../models/users");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
+const verifyValidIds_1 = require("../middleware/verifyValidIds");
 const verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
 const store = new users_1.UserStore();
 // return a list of users
@@ -57,10 +57,9 @@ const create = async (req, res) => {
         res.json(e);
     }
 };
-const middleware = [verifyValidId_1.default, verifyAuthToken_1.default];
 const userRoutes = (app) => {
     app.get('/users', verifyAuthToken_1.default, index);
-    app.get('/users/:id', middleware, show);
+    app.get('/users/:id', [verifyAuthToken_1.default, verifyValidIds_1.verifyValidParamId], show);
     app.post('/users', create);
 };
 exports.default = userRoutes;

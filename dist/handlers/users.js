@@ -41,7 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var users_1 = require("../models/users");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
+var verifyValidIds_1 = require("../middleware/verifyValidIds");
+var verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
 var store = new users_1.UserStore();
 // return a list of users
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -123,8 +124,8 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var userRoutes = function (app) {
-    app.get('/users', verifyValidId_1["default"], index);
-    app.get('/users/:id', verifyValidId_1["default"], show);
+    app.get('/users', verifyAuthToken_1["default"], index);
+    app.get('/users/:id', [verifyAuthToken_1["default"], verifyValidIds_1.verifyValidParamId], show);
     app.post('/users', create);
 };
 exports["default"] = userRoutes;

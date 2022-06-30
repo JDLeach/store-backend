@@ -1,8 +1,7 @@
 import express, {Request, Response} from 'express';
 import verifyAuthToken from '../middleware/verifyAuthToken';
-import verifyValidId from '../middleware/verifyValidId';
 import { Product, ProductStore } from '../models/products';
-
+import {verifyValidBodyId, verifyValidParamId} from '../middleware/verifyValidIds';
 
 const store = new ProductStore();
 
@@ -50,7 +49,7 @@ const create = async (req:Request, res:Response) =>{
 
 const productRoutes = (app: express.Application) => {
     app.get('/products', index)
-    app.get('/products/:id', verifyValidId, show)
+    app.get('/products/:id', verifyValidParamId, show)
     app.post('/products', verifyAuthToken, create)
 }
 

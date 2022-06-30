@@ -4,7 +4,6 @@ import Client from '../../database';
 
 const store = new OrderStore();
 
-const PRODUCTS = []
 const createRandomProducts = ()=>{
     return {
         name: faker.commerce.product(),

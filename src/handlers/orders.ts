@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express'
 import verifyAuthToken from '../middleware/verifyAuthToken';
-import verifyValidId from '../middleware/verifyValidId';
+import {verifyValidParamId} from '../middleware/verifyValidIds';
 import { Order, OrderStore } from '../models/orders'
 
 const store = new OrderStore();
@@ -71,13 +71,11 @@ const createOrder = async (req:Request, res:Response) =>{
     }
 }
 
-const middleware = [verifyValidId, verifyAuthToken];
-
 const orderRoutes = (app: express.Application) =>{
-    app.get('/orders/:id', middleware, showCurrent);
-    app.get('/orders/completed/:id', middleware, showCompleted)
-    app.get('/orders/:id/products', middleware, showProducts)
-    app.post('/orders/:id/products', middleware, addProduct)
+    app.get('/orders/:id', [verifyAuthToken, verifyValidParamId], showCurrent);
+    app.get('/orders/completed/:id', [verifyAuthToken, verifyValidParamId], showCompleted)
+    app.get('/orders/:id/products', [verifyAuthToken, verifyValidParamId], showProducts)
+    app.post('/orders/:id/products', [verifyAuthToken, verifyValidParamId], addProduct)
     app.post('/orders', verifyAuthToken, createOrder);
 }
 

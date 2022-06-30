@@ -7,7 +7,6 @@ const orders_1 = require("../orders");
 const faker_1 = require("@faker-js/faker");
 const database_1 = __importDefault(require("../../database"));
 const store = new orders_1.OrderStore();
-const PRODUCTS = [];
 const createRandomProducts = () => {
     return {
         name: faker_1.faker.commerce.product(),

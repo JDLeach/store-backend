@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express';
 import { User, UserStore } from '../models/users';
 import jwt from 'jsonwebtoken';
-import verifyValidId from '../middleware/verifyValidId';
+import {verifyValidParamId} from '../middleware/verifyValidIds';
 import verifyAuthToken from '../middleware/verifyAuthToken';
 
 const store = new UserStore();
@@ -56,11 +56,11 @@ const create = async(req:Request, res:Response) =>{
     }
 }
 
-const middleware = [verifyValidId, verifyAuthToken];
+
 
 const userRoutes = (app: express.Application) =>{
     app.get('/users', verifyAuthToken, index)
-    app.get('/users/:id', middleware, show)
+    app.get('/users/:id', [verifyAuthToken, verifyValidParamId], show)
     app.post('/users', create)
 }
 

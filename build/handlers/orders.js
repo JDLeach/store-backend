@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const verifyAuthToken_1 = __importDefault(require("../middleware/verifyAuthToken"));
-const verifyValidId_1 = __importDefault(require("../middleware/verifyValidId"));
+const verifyValidIds_1 = require("../middleware/verifyValidIds");
 const orders_1 = require("../models/orders");
 const store = new orders_1.OrderStore();
 const showCurrent = async (req, res) => {
@@ -70,12 +70,11 @@ const createOrder = async (req, res) => {
         res.json(e);
     }
 };
-const middleware = [verifyValidId_1.default, verifyAuthToken_1.default];
 const orderRoutes = (app) => {
-    app.get('/orders/:id', middleware, showCurrent);
-    app.get('/orders/completed/:id', middleware, showCompleted);
-    app.get('/orders/:id/products', middleware, showProducts);
-    app.post('/orders/:id/products', middleware, addProduct);
+    app.get('/orders/:id', [verifyAuthToken_1.default, verifyValidIds_1.verifyValidParamId], showCurrent);
+    app.get('/orders/completed/:id', [verifyAuthToken_1.default, verifyValidIds_1.verifyValidParamId], showCompleted);
+    app.get('/orders/:id/products', [verifyAuthToken_1.default, verifyValidIds_1.verifyValidParamId], showProducts);
+    app.post('/orders/:id/products', [verifyAuthToken_1.default, verifyValidIds_1.verifyValidParamId], addProduct);
     app.post('/orders', verifyAuthToken_1.default, createOrder);
 };
 exports.default = orderRoutes;
