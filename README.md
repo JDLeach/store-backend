@@ -3,7 +3,10 @@
 ## Config/Setup Instructions
 
 See .env.sample for the needed environment variables    
-Add in the username and password that you set in the .env file into the database.json file
+Add in the username and password that you set in the .env file into the database.json file   
+   
+The PostgreSQL server will default to port 5432. If this needs to be changed:   
+Open the docker-compose.yml file, uncomment the command line. Replace <port-number> with the port to run the db on.
   
 To start the PostgresSQL database use docker-compose up  
 Once the database is running you will need to:  
